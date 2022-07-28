@@ -1,0 +1,21 @@
+# This playbook will add groups and users in a looped mode on multiple users.
+# Tested and working Successfully on both Centos and Ubuntu hosts
+---
+- name: Adding Groups and Users
+  hosts: all
+  tasks:
+   - name: Add Group
+     group:
+       name: devops
+       state: present
+
+   - name: Add Users in Ubuntu
+     user: 
+        name: '{{item}}'
+        state: present
+        group: devops
+     loop:
+       - user1
+       - user2
+       - user3
+       - user4
