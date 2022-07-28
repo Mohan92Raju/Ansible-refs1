@@ -19,3 +19,11 @@
        - user2
        - user3
        - user4
+    
+   - name: Add Users in Ubuntu
+     ansible.builtin.user: 
+        name: '{{item}}'
+        state: present
+        group: devops
+     # depends upon the entries in group_vars/all
+     loop: '{{usernames}}'
