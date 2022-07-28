@@ -1,0 +1,44 @@
+# This playbook will Install, start and enable NTP on all hosts specified
+# Tested and working Successfully on both Centos and Ubuntu hosts
+---
+- name: Provisioning Server
+  hosts: all
+  tasks:
+   - name: Add repository in CentOS
+     yum:
+       name: epel-release
+       state: present
+     when: ansible_distribution == "CentOS"
+
+   - name: Add repository in Ubuntu
+     apt_repository:
+       repo: deb http://archive.ubuntu.com/ubuntu focal universe
+       state: present
+     when: ansible_distribution == "Ubuntu"
+
+   - name: Install NTP on CentOS
+     yum:
+       name: chrony
+       state: present
+     when: ansible_distribution == "CentOS"
+
+   - name: Install NTP on "Ubuntu"
+     apt:
+       name: ntp
+       state: present
+     when: ansible_distribution == "Ubuntu"
+
+   - name: Start and Enable NTP on Centos
+     service:
+       name: ntpd
+       state: started
+       enabled: yes
+     when: ansible_os_family == "RedHat"
+
+   - name: Start and Enable NTP on Ubuntu
+     service:
+       name: ntp
+       state: started
+       enabled: yes
+     when: ansible_os_family == "Debian"
+    
