@@ -1,0 +1,11 @@
+# This playbook will update the motd file
+# Tested and working Successfully on both Centos and Ubuntu hosts
+---
+- name: Provisioning Server
+  hosts: all
+  gather_facts: FALSE
+  tasks:
+   - name: Copying the Banner File
+     copy:
+       content: "This is a {{ansible_distribution}} managed by the Ansible File.\n "
+       dest: /etc/motd
