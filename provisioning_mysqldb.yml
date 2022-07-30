@@ -1,0 +1,44 @@
+---
+- name: Setup DBServer
+  hosts: dbsrvgrp
+  become: yes
+  vars: # values to be used throughout the file are defined here.
+    dbname: groups
+    dbuser: devops
+    dbpass: admin123
+  tasks:
+    - debug:
+        var: dbname
+
+    - debug:
+        msg: "Value of the dbuser is {{dbuser}}"
+      
+    - name: Install Mysql Server # first task to install Apache
+      yum:
+        name: mariadb-server
+        state: present
+
+    - name: Install ansible python3 mysql dependency
+      yum:
+        name: python3-PyMySQL
+        state: present
+
+    - name: Start and enable Mysql Server
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: Create a new DB "accounts"
+      mysql_db:
+        name: "{{dbname}}" # Dbname will be called from the vars
+        state: present
+        login_unix_socket: /var/lib/mysql/mysql.sock
+# "{{}}" - this is called as "JINJA2 TEMPLATING"
+    - name: Create database user with name 'bob' and password '12345' with all database privileges
+      mysql_user:
+        login_unix_socket: /var/lib/mysql/mysql.sock
+        name: "{{dbuser}}" # Dbname user name will be called from the vars
+        password: "{{dbpass}}" # Dbname password will be called from the vars
+        priv: '*.*:ALL'
+        state: present
