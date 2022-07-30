@@ -1,0 +1,37 @@
+# This playbook will copy and update the chrony or the ntp file
+# RHEL and Ubuntu hosts respectively
+# Tested and working Successfully on both Centos and Ubuntu
+---
+- name: Update the ntp config files on RHEL and Ubuntu Hosts
+  hosts: all
+  tasks:
+    - name: Deploy chrony to RHEL hosts
+      template:
+         src: templates/chrony.conf.j2
+         dest: /etc/chrony.conf
+      when: ansible_os_family == "RedHat"
+
+    - name: Deploy chrony to "Ubuntu" hosts
+      template:
+         src: templates/ntp.conf.j2
+         dest: /etc/ntp.conf
+      when: ansible_os_family == "Debian"
+
+    - name: Restart the chrony service on RHEL
+      service:
+         name: chronyd
+         state: restarted
+         enabled: yes
+      when: ansible_os_family == "RedHat"
+
+    - name: Restart the NTP service on Ubuntu hosts
+      service:
+         name: ntp
+         state: restarted
+         enabled: yes
+      when: ansible_os_family == "Debian"
+
+     
+
+
+    
