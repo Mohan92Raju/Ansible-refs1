@@ -1,0 +1,25 @@
+# This playbook will copy and update the chrony or the ntp file
+# RHEL and Ubuntu hosts respectively
+# Tested and working Successfully on both Centos and Ubuntu
+---
+- name: Manipulating files and Directories Using the FILE module
+  hosts: all
+  gather_facts: False
+  tasks:
+    - name: Create a directory if it does not exist
+      file:
+        path: /opt
+        state: directory
+        mode: '0775'
+
+    - name: Create a Dir for Dev Data
+      file: 
+        path: /opt/dev/data
+        state: directory
+        mode: '0775'
+
+    - name: Create a test file within the Dev Data Dir.
+      file: 
+        path: /opt/dev/data
+        state: directory
+        mode: '0644'
