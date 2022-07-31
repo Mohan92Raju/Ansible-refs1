@@ -1,0 +1,15 @@
+---
+# handlers file for post-install
+- name: Restart the chrony service on RHEL
+  service:
+     name: chronyd
+     state: restarted
+     enabled: yes
+  when: ansible_os_family == "RedHat"
+
+- name: Restart the NTP service on Ubuntu hosts
+  service:
+     name: ntp
+     state: restarted
+     enabled: yes
+  when: ansible_os_family == "Debian"

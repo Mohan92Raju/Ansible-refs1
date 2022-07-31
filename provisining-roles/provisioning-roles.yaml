@@ -1,0 +1,8 @@
+# This is a sample playbook for a role based Ansible Playbook.
+---
+- name: Provisioning Server
+  hosts: all
+  become: yes
+  # Multiple roles can be added here to a single playbook.
+  roles:
+    - post-install

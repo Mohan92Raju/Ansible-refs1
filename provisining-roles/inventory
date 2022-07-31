@@ -1,0 +1,32 @@
+webserver01-centos ansbile_host=10.148.0.14
+webserver02-centos ansbile_host=10.148.0.16 
+webserver03-ubuntu ansbile_host=10.148.0.25
+dbserver01-centos ansbile_host=10.148.0.17 
+
+[websrvgrp]
+webserver01-centos
+webserver02-centos
+webserver03-ubuntu
+
+[dbsrvgrp]
+dbserver01-centos
+
+#[dbsrvgrp:vars]
+#ansible_python_interpreter=/usr/bin/python3.9
+
+[dc_ohio:children]
+websrvgrp
+dbsrvgrp
+
+# Vars preceeds the host level. Remove the Vars at host level if Vars is set.
+# Setting Vars at single group level
+
+# [websrgrp:vars]
+# ansible_user=g002_vvdcloud
+# ansible_ssh_private_key_file=priv_key.pem
+
+# Setting Vars at global Level
+[dc_ohio:vars]
+become=yes
+ansible_user=g002_vvdcloud
+ansible_ssh_private_key_file=priv_key.pem
